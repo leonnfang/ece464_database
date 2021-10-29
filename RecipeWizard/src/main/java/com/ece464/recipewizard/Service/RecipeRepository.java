@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RecipeRepository extends MongoRepository<Recipe, String> {
 
-    public Recipe findByName(String name);
-    public JSONArray findByIngredient(List<List<String>> ingredients);
-
+    List<Recipe> findByName(String name);
+    JSONArray findByIngredient(List<List<String>> ingredients);
+    // TODO should add more apis to fetch data
 }
