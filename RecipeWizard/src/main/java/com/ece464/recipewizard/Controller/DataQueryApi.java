@@ -6,9 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ece464.recipewizard.Model.Recipe;
 import com.ece464.recipewizard.Service.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,24 +25,53 @@ public class DataQueryApi {
         return true;
     }
 
+    /**
+     *
+     * @param names
+     * @return
+     */
+
     @RequestMapping(path = "/search/recipe/{names}")
-    public JSONArray getRecipeByNames(@PathVariable List<String> names){
-        List<Recipe> recipes = repository.findByName(names.get(0));
-        return new JSONArray(Collections.singletonList(recipes));
+    public JSONArray getRecipeByNames(@PathVariable String names){
+//        List<Recipe> recipes = repository.findByName(names.get(0));
+//        return new JSONArray(Collections.singletonList(recipes));
+        return new JSONArray();
     }
 
-    @RequestMapping(path = "/search/ingredient/{names}")
-    public JSONArray getRecipeByIngredients(@PathVariable List<String> names){
+    /**
+     *
+     * @return
+     */
+    @RequestMapping(path = "/info/list_ingredients")
+    public JSONArray getIngredientList(){
+        return new JSONArray();
+    }
+    /**
+     *
+     * @param names the list of ingredients
+     * @return matched recipes
+     */
+    @RequestMapping(path = "/search/ingredient")
+    public JSONArray getRecipeByIngredients(@RequestHeader List<String> names){
         repository.findByIngredient(Collections.singletonList(names));
         return new JSONArray();
     }
 
+    /**
+     *
+     * @return
+     */
     @RequestMapping(path = "/search/recommend")
     public JSONArray recommendRecipe(){
         // return the recommended recipes
         return new JSONArray();
     }
 
+    /**
+     *
+     * @param recipeInfo
+     * @return
+     */
     @RequestMapping(path = "/update/recipe")
     public boolean insertRecipe(JSONObject recipeInfo){
         // TODO insert the recipe info to the database
