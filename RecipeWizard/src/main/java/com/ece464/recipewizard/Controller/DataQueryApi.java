@@ -3,24 +3,20 @@ package com.ece464.recipewizard.Controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ece464.recipewizard.Model.Recipe;
 import com.ece464.recipewizard.Service.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @RestController
 public class DataQueryApi {
 
-    private final RecipeRepository repository;
-
-    public DataQueryApi(RecipeRepository repository) {
-        this.repository = repository;
-    }
-    // query by name
-    // query by ingredients
-    // top recommendation ?? additional features
+    @Autowired
+    RecipeRepository repository;
 
     @RequestMapping(path = "/health")
     public boolean health(){
@@ -29,17 +25,16 @@ public class DataQueryApi {
 
     /**
      *
-     * @param names
+     * @param name
      * the names users are interested in searching for
      * @return
      * all matched recipes will be returned
      */
 
-    @RequestMapping(path = "/search/recipe/{names}")
-    public JSONArray getRecipeByNames(@PathVariable String names){
-//        List<Recipe> recipes = repository.findByName(names.get(0));
-//        return new JSONArray(Collections.singletonList(recipes));
-        return new JSONArray();
+    @RequestMapping(path = "/search/recipe/{name}")
+    public List<Recipe> getRecipeByNames(@PathVariable String name){
+        List<Recipe> result = repository.findAllByNameContains(name);
+        return result;
     }
 
     /**
@@ -49,7 +44,12 @@ public class DataQueryApi {
      */
     @RequestMapping(path = "/info/list_ingredients")
     public JSONArray getIngredientList(){
-        return new JSONArray();
+        List<Recipe> result = repository.findAllByNameIsNotNull();
+        JSONArray names = new JSONArray();
+        for(Recipe item : result){
+            names.add(item.getName());
+        }
+        return names;
     }
 
 
@@ -85,7 +85,7 @@ public class DataQueryApi {
      */
     @RequestMapping(path = "/update/recipe")
     public boolean insertRecipe(JSONObject recipeInfo){
-        // TODO insert the recipe info to the database
+
         return true;
     }
 }
