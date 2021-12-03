@@ -15,8 +15,8 @@ public class Recipe {
     @Id
     private String _id;
     private String name;
-    private String imageURL;
-    private JSONArray ingredient;
+    private String img_url;
+    private JSONArray ingredients;
     private String label;
     private JSONArray description;
 
@@ -38,19 +38,19 @@ public class Recipe {
     }
 
     public String getImageURL() {
-        return imageURL;
+        return img_url;
     }
 
     public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+        this.img_url = imageURL;
     }
 
-    public JSONArray getIngredient() {
-        return ingredient;
+    public JSONArray getIngredients() {
+        return ingredients;
     }
 
     public void setIngredient(JSONArray ingredient) {
-        this.ingredient = ingredient;
+        this.ingredients = ingredient;
     }
 
     public String getLabel() {

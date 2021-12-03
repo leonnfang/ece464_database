@@ -9,17 +9,9 @@ import java.util.List;
 
 public interface RecipeRepository extends MongoRepository<Recipe, String> {
 
-    public List<Recipe> findByName(String name);
-    @Query("{'name' : {$ne : null}}")
-    public JSONArray getIngredientsList();
-
-    public JSONArray getAllByNameRegex(String regex);
-
-    public JSONArray findByIngredient(List<List<String>> ingredients);
-
-    @Query("{'name' : {$regex : ?0 }}")
-    public JSONArray getRecipeByNameRegex(String name);
-
-    public List<Recipe> findAllByNameIsNotNull();
-    public List<Recipe> findAllByNameContains(String name);
+    List<Recipe> findAllByName(String name);
+    // todo update ingredients
+    List<Recipe> findByIngredient(List<List<String>> ingredients);
+    List<Recipe> findAllByNameIsNotNull();
+    List<Recipe> getAllByNameContains(String name);
 }

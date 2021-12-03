@@ -33,8 +33,7 @@ public class DataQueryApi {
 
     @RequestMapping(path = "/search/recipe/{name}")
     public List<Recipe> getRecipeByNames(@PathVariable String name){
-        List<Recipe> result = repository.findAllByNameContains(name);
-        return result;
+        return repository.getAllByNameContains(name);
     }
 
     /**
@@ -42,14 +41,43 @@ public class DataQueryApi {
      * @return
      * the list of all ingredients will be returned
      */
-    @RequestMapping(path = "/info/list_ingredients")
-    public JSONArray getIngredientList(){
+    @RequestMapping(path = "/info/list_name")
+    public List<String> getNameList(){
         List<Recipe> result = repository.findAllByNameIsNotNull();
-        JSONArray names = new JSONArray();
+        List<String> names = new ArrayList<>();
         for(Recipe item : result){
             names.add(item.getName());
         }
         return names;
+    }
+
+    /**
+     *
+     * @param recipeName
+     * name of the recipe
+     * @return
+     * all recipes whose names match with the input String
+     * A list of recipes will be returned
+     */
+
+    @RequestMapping(path = "/info/{recipeName}")
+    public List<Recipe> findRecipeByName(@PathVariable String recipeName){
+        return repository.findAllByName(recipeName);
+    }
+
+    /**
+     *
+     * @param recipe
+     * the name of the recipe users intend to find the ingredients for
+     * @return
+     * the list of ingredients of the first matched recipe with the inputted recipe name
+     */
+    @RequestMapping(path = "/info/list_ingredients/{recipe}")
+    public JSONArray getIngredientsByName(@PathVariable String recipe){
+        List<Recipe> result = repository.findAllByName(recipe);
+        JSONArray ingredientList = new JSONArray();
+        ingredientList.add(result.get(0).getIngredients());
+        return ingredientList;
     }
 
 
@@ -83,7 +111,7 @@ public class DataQueryApi {
      * @return
      * status will be returned, to see the recipe has been updated or not
      */
-    @RequestMapping(path = "/update/recipe")
+    @RequestMapping(path = "/insert/recipe")
     public boolean insertRecipe(JSONObject recipeInfo){
 
         return true;
