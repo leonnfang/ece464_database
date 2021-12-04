@@ -27,13 +27,13 @@ public class DataQueryApi {
      *
      * @param name
      * the names users are interested in searching for
-     * one example would be beef
-     * all names which contain beef will be returned
+     * one example would be apple
+     * all names containing apple will be returned
      * @return
      * all matched recipes will be returned
      */
 
-    @RequestMapping(path = "/search/recipe/{name}")
+    @RequestMapping(path = "/search/recipe_contains/{name}")
     public List<Recipe> getRecipeByNames(@PathVariable String name){
         return repository.getAllByNameContains(name);
     }
@@ -77,7 +77,7 @@ public class DataQueryApi {
      * @return
      * the list of ingredients of the first matched recipe with the inputted recipe name
      */
-    @RequestMapping(path = "/info/list_ingredients/{recipe}")
+    @RequestMapping(path = "/search/list_ingredients/{recipe}")
     public JSONArray getIngredientsByName(@PathVariable String recipe){
         List<Recipe> result = repository.findAllByName(recipe);
         return result.get(0).getIngredients();
@@ -90,13 +90,11 @@ public class DataQueryApi {
      * @param ingredientName
      * the name of the ingredient
      * @return matched recipes
-     * all recipe whose ingredients contain this ingredient name will be returned
+     * all recipe whose ingredients contain the input will be returned
      */
-    @RequestMapping(path = "/search/ingredient/{ingredientName}")
+    @RequestMapping(path = "/search/ingredient_name_contains/{ingredientName}")
     public List<Recipe> getRecipeByIngredients(@PathVariable String ingredientName){
-        JSONArray ingredientNames = new JSONArray();
-        ingredientNames.add(ingredientName);
-        return repository.getAllByIngredientsContains(ingredientNames);
+        return repository.getAllByIngredientsListContains(ingredientName);
     }
 
     /**
@@ -131,6 +129,7 @@ public class DataQueryApi {
         recipe.setDescription(recipeInfo.getJSONArray("description"));
         recipe.setLabel(recipeInfo.getString("label"));
         recipe.setName(recipeInfo.getString("name"));
+        recipe.setIngredientsList(recipeInfo.getString("ingredients_list"));
         repository.insert(recipe);
         return true;
     }

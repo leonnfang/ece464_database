@@ -17,54 +17,9 @@ public class Recipe {
     private String name;
     private String img_url;
     private JSONArray ingredients;
+    private String ingredientsList;
     private String label;
     private JSONArray description;
 
-    public String get_id() {
-        return _id;
-    }
 
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImg_url() {
-        return img_url;
-    }
-
-    public void setImg_url(String img_url) {
-        this.img_url = img_url;
-    }
-
-    public JSONArray getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(JSONArray ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public JSONArray getDescription() {
-        return description;
-    }
-
-    public void setDescription(JSONArray description) {
-        this.description = description;
-    }
 }
