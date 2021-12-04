@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -27,6 +27,8 @@ public class DataQueryApi {
      *
      * @param name
      * the names users are interested in searching for
+     * one example would be beef
+     * all names which contain beef will be returned
      * @return
      * all matched recipes will be returned
      */
@@ -39,7 +41,7 @@ public class DataQueryApi {
     /**
      *
      * @return
-     * the list of all ingredients will be returned
+     * the list of all recipes' names will be returned
      */
     @RequestMapping(path = "/info/list_name")
     public List<String> getNameList(){
@@ -55,6 +57,9 @@ public class DataQueryApi {
      *
      * @param recipeName
      * name of the recipe
+     * an example would be Grilled Country Style Ribs
+     * this input has to be exactly same as the name in the database
+     * otherwise, nothing will be returned
      * @return
      * all recipes whose names match with the input String
      * A list of recipes will be returned
@@ -75,22 +80,23 @@ public class DataQueryApi {
     @RequestMapping(path = "/info/list_ingredients/{recipe}")
     public JSONArray getIngredientsByName(@PathVariable String recipe){
         List<Recipe> result = repository.findAllByName(recipe);
-        JSONArray ingredientList = new JSONArray();
-        ingredientList.add(result.get(0).getIngredients());
-        return ingredientList;
+        return result.get(0).getIngredients();
     }
 
 
 
     /**
      *
-     * @param names the list of ingredients
+     * @param ingredientName
+     * the name of the ingredient
      * @return matched recipes
+     * all recipe whose ingredients contain this ingredient name will be returned
      */
-    @RequestMapping(path = "/search/ingredient")
-    public JSONArray getRecipeByIngredients(@RequestHeader List<String> names){
-        repository.findByIngredient(Collections.singletonList(names));
-        return new JSONArray();
+    @RequestMapping(path = "/search/ingredient/{ingredientName}")
+    public List<Recipe> getRecipeByIngredients(@PathVariable String ingredientName){
+        JSONArray ingredientNames = new JSONArray();
+        ingredientNames.add(ingredientName);
+        return repository.getAllByIngredientsContains(ingredientNames);
     }
 
     /**
@@ -98,10 +104,16 @@ public class DataQueryApi {
      * @return
      * all recommended recipe will be returned as Json array
      */
-    @RequestMapping(path = "/search/recommend")
-    public JSONArray recommendRecipe(){
-        // return the recommended recipes
-        return new JSONArray();
+    @RequestMapping(path = "/search/recommend/{number}")
+    public List<Recipe> recommendRecipe(@PathVariable int number){
+        List<Recipe> result = repository.getAllByLabelIsNotNull();
+        int min = 0;
+        int max = result.size();
+        List<Recipe> recipes = new LinkedList<>();
+        for(int i = 0; i < number; i++){
+            recipes.add(result.get((int)Math.floor(Math.random()*(max-min+1)+min)));
+        }
+        return recipes;
     }
 
     /**
@@ -111,9 +123,15 @@ public class DataQueryApi {
      * @return
      * status will be returned, to see the recipe has been updated or not
      */
-    @RequestMapping(path = "/insert/recipe")
-    public boolean insertRecipe(JSONObject recipeInfo){
-
+    @PutMapping(path = "/insert")
+    public boolean insertRecipe(@RequestHeader JSONObject recipeInfo){
+        Recipe recipe = new Recipe();
+        recipe.setIngredients(recipeInfo.getJSONArray("ingredients"));
+        recipe.setImg_url(recipeInfo.getString("img_url"));
+        recipe.setDescription(recipeInfo.getJSONArray("description"));
+        recipe.setLabel(recipeInfo.getString("label"));
+        recipe.setName(recipeInfo.getString("name"));
+        repository.insert(recipe);
         return true;
     }
 }

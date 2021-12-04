@@ -20,13 +20,12 @@ public class Recipe {
     private String label;
     private JSONArray description;
 
-
-    public String getId() {
+    public String get_id() {
         return _id;
     }
 
-    public void setId(String id) {
-        this._id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getName() {
@@ -37,20 +36,20 @@ public class Recipe {
         this.name = name;
     }
 
-    public String getImageURL() {
+    public String getImg_url() {
         return img_url;
     }
 
-    public void setImageURL(String imageURL) {
-        this.img_url = imageURL;
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
     }
 
     public JSONArray getIngredients() {
         return ingredients;
     }
 
-    public void setIngredient(JSONArray ingredient) {
-        this.ingredients = ingredient;
+    public void setIngredients(JSONArray ingredients) {
+        this.ingredients = ingredients;
     }
 
     public String getLabel() {

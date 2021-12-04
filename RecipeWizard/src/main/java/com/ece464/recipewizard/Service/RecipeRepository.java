@@ -10,8 +10,8 @@ import java.util.List;
 public interface RecipeRepository extends MongoRepository<Recipe, String> {
 
     List<Recipe> findAllByName(String name);
-    // todo update ingredients
-    List<Recipe> findByIngredient(List<List<String>> ingredients);
     List<Recipe> findAllByNameIsNotNull();
     List<Recipe> getAllByNameContains(String name);
+    List<Recipe> getAllByIngredientsContains(JSONArray ingredients);
+    List<Recipe> getAllByLabelIsNotNull();
 }
