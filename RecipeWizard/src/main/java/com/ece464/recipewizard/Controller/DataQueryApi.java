@@ -35,7 +35,8 @@ public class DataQueryApi {
 
     @RequestMapping(path = "/search/recipe_contains/{name}")
     public List<Recipe> getRecipeByNames(@PathVariable String name){
-        return repository.getAllByNameContains(name);
+        return repository.findByNameRegex(name);
+//        return repository.getAllByNameContains(name);
     }
 
     /**
@@ -94,7 +95,8 @@ public class DataQueryApi {
      */
     @RequestMapping(path = "/search/ingredient_name_contains/{ingredientName}")
     public List<Recipe> getRecipeByIngredients(@PathVariable String ingredientName){
-        return repository.getAllByIngredientsListContains(ingredientName);
+        return repository.findByIngredientsListRegex(ingredientName);
+//        return repository.getAllByIngredientsListContains(ingredientName);
     }
 
     /**

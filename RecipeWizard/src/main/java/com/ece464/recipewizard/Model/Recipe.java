@@ -5,10 +5,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * TODO need to improve the structure of the model
- * the data should be better saved in a way that its easier to store and fetch data
- */
 @Data
 @Document(collection="Scrapy_labeledrecipes")
 public class Recipe {
