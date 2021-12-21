@@ -13,11 +13,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins= "*")
 public class DataQueryApi {
 
     @Autowired
     RecipeRepository repository;
 
+    @CrossOrigin
     @RequestMapping(path = "/health")
     public boolean health(){
         return true;
@@ -33,6 +35,7 @@ public class DataQueryApi {
      * all matched recipes will be returned
      */
 
+    @CrossOrigin(origins= "*")
     @RequestMapping(path = "/search/recipe_contains/{name}")
     public List<Recipe> getRecipeByNames(@PathVariable String name){
         return repository.findByNameRegex(name);
@@ -44,6 +47,7 @@ public class DataQueryApi {
      * @return
      * the list of all recipes' names will be returned
      */
+    @CrossOrigin
     @RequestMapping(path = "/info/list_name")
     public List<String> getNameList(){
         List<Recipe> result = repository.findAllByNameIsNotNull();
@@ -66,6 +70,7 @@ public class DataQueryApi {
      * A list of recipes will be returned
      */
 
+    @CrossOrigin
     @RequestMapping(path = "/info/{recipeName}")
     public List<Recipe> findRecipeByName(@PathVariable String recipeName){
         return repository.findAllByName(recipeName);
@@ -93,6 +98,7 @@ public class DataQueryApi {
      * @return matched recipes
      * all recipe whose ingredients contain the input will be returned
      */
+    @CrossOrigin
     @RequestMapping(path = "/search/ingredient_name_contains/{ingredientName}")
     public List<Recipe> getRecipeByIngredients(@PathVariable String ingredientName){
         return repository.findByIngredientsListRegex(ingredientName);
@@ -104,6 +110,7 @@ public class DataQueryApi {
      * @return
      * all recommended recipe will be returned as Json array
      */
+    @CrossOrigin
     @RequestMapping(path = "/search/recommend/{number}")
     public List<Recipe> recommendRecipe(@PathVariable int number){
         List<Recipe> result = repository.getAllByLabelIsNotNull();
@@ -123,6 +130,7 @@ public class DataQueryApi {
      * @return
      * status will be returned, to see the recipe has been updated or not
      */
+    @CrossOrigin
     @PutMapping(path = "/insert")
     public boolean insertRecipe(@RequestHeader JSONObject recipeInfo){
         Recipe recipe = new Recipe();
